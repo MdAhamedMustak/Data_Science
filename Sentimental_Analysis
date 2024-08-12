@@ -1,0 +1,106 @@
+from textblob import TextBlob
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
+
+
+
+
+# Sample list of 30 restaurant reviews ,more can be added
+
+reviews = [
+    "The food was absolutely wonderful, from preparation to presentation, very pleasing.",
+    "The service was terrible, and the food was bland and overpriced.",
+    "Had a great experience! The ambiance was perfect, and the staff was very friendly.",
+    "The pizza was too salty, and the crust was burnt. Would not recommend.",
+    "Just okay, nothing special. Service was slow but the food was decent.",
+    "Amazing place! The staff was welcoming and the food was delicious.",
+    "Worst experience ever. The waiter was rude, and the food was cold.",
+    "Really enjoyed the meal, the service was quick and the food was fresh.",
+    "I loved the dessert, but the main course was disappointing.",
+    "The restaurant was too crowded, and we had to wait a long time for our food.",
+    "The food quality has declined, but the service is still great.",
+    "Best pasta I've ever had. Will definitely come back!",
+    "The place is overpriced for what it offers. Not worth it.",
+    "Had a lovely evening. The food and drinks were top-notch.",
+    "The service was slow, and the food wasn't that great.",
+    "A great place for a family dinner. The kids loved it.",
+    "The steak was undercooked, and the sides were bland.",
+    "Excellent service and fantastic food. Highly recommend!",
+    "Not impressed. The ambiance was nice, but the food was mediocre.",
+    "The restaurant is beautifully decorated, and the food was excellent.",
+    "Terrible experience. The food took forever to arrive, and it was cold.",
+    "Loved the vibe of the place, and the food was pretty good too.",
+    "The waitstaff was inattentive, and the food was just okay.",
+    "Best dining experience in a long time! The food was out of this world.",
+    "The prices are high, but the food and service are worth it.",
+    "Will not be returning. The food was bad, and the service was worse.",
+    "The pizza was amazing! Crispy crust and fresh toppings.",
+    "Had an average experience. Nothing to write home about.",
+    "The food was good, but the service was exceptional.",
+    "Disappointed with the food, but the drinks were great."
+]
+
+
+
+
+
+# Generate and display the word cloud for the reviews
+
+all_reviews_text = " ".join(reviews)
+wordcloud = WordCloud(width=800, height=400, background_color='white').generate(all_reviews_text)
+
+plt.figure(figsize=(10, 5))
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis('off')
+plt.title("Word Cloud of Reviews")
+plt.show()
+
+
+
+
+# Function to analyze sentiment of each review
+
+def analyze_sentiment(review):
+    analysis = TextBlob(review)
+    polarity = analysis.sentiment.polarity
+    if polarity > 0:
+        return "Positive"
+    elif polarity < 0:
+        return "Negative"
+    else:
+        return "Neutral"
+
+
+
+
+
+# Analyze sentiment for each review and categorize it
+
+sentiments = {"Positive": 0, "Negative": 0, "Neutral": 0}
+for review in reviews:
+    sentiment = analyze_sentiment(review)
+    sentiments[sentiment] += 1
+
+
+
+
+
+# Display sentiment analysis results
+
+print("\nSentiment Analysis Results:")
+for sentiment, count in sentiments.items():
+    print(f"{sentiment}: {count} reviews")
+
+
+
+
+
+# Plotting the sentiment distribution as a bar chart
+
+plt.figure(figsize=(8, 6))
+plt.bar(sentiments.keys(), sentiments.values(), color=['green', 'red', 'blue'])
+plt.title("Sentiment Analysis of 30 Reviews")
+plt.xlabel("Sentiment")
+plt.ylabel("Number of Reviews")
+plt.show()
